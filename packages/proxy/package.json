@@ -1,0 +1,49 @@
+{
+  "name": "@spruce-hub/service-proxy",
+  "version": "0.0.0",
+  "description": "Universal http proxy utils",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./*": "./*"
+  },
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "changelog": "conventional-changelog -n '../../changelog.config.js' -i CHANGELOG.md -s -r 0 -k ./package.json --commit-path ./"
+  },
+  "keywords": [
+    "飞讯云杉前端",
+    "Spruce Hub",
+    "http-proxy"
+  ],
+  "author": "Noah Yu",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spruce-hub/service-proxy.git",
+    "directory": "packages/proxy"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=7.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "http-proxy": "^1.18.1",
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1"
+  },
+  "devDependencies": {
+    "@types/http-proxy": "^1.17.10"
+  }
+}
