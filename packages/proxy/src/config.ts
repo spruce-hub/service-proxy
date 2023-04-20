@@ -4,13 +4,17 @@ export interface Config {
      *
      * - sslKeyPath = join(cwd(), config.https.sslKey)
      * -------------------------- */
-    sslKey: string
+    sslKey: {
+      [key: string]: string
+    }
 
     /** SSL Pem 相对于运行目录的根路径
      *
      * -- sslPemPath = join(cwd(), config.https.sslPem)
      * -------------------------- */
-    sslPem: string
+    sslPem: {
+      [key: string]: string
+    }
   }
 
   /** 远程地址和目标地址

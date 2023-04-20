@@ -72,16 +72,32 @@ export const createServer = (config: Config) => {
     xfwd: true,
   })
   isError(PROXY)
+
   if (config.https?.sslKey && config.https?.sslPem) {
-    const FILE_PATH_KEY = join(cwd(), config.https.sslKey)
-    const FILE_PATH_PEM = join(cwd(), config.https.sslPem)
-    const HTTPS_OPTION = {
-      key: readFileSync(FILE_PATH_KEY),
-      cert: readFileSync(FILE_PATH_PEM),
+    const paths = Object.keys(config.https.sslKey)
+
+    const sslmap: { [key: string]: { key: Buffer; cert: Buffer } } = {}
+
+    for (const path in paths) {
+      sslmap[path].key = readFileSync(join(cwd(), config.https.sslKey[path]))
+      sslmap[path].cert = readFileSync(join(cwd(), config.https.sslPem[path]))
     }
 
-    const SERVER = httpsCreateServer(HTTPS_OPTION, (req, res) => {
+    const SERVER = httpsCreateServer((req, res) => {
       isDistribution(PROXY, req, res, config)
+    })
+
+    SERVER.addListener('secureConnection', (tlsSocket) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore: resolved with Nuxt
+      const servername = tlsSocket.servername
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore: resolved with Nuxt
+      tlsSocket.context.setKey(sslmap[servername].key)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore: resolved with Nuxt
+      tlsSocket.context.setCert(sslmap[servername].cert)
     })
 
     SERVER.listen(443, '0.0.0.0', () => {
