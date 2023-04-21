@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/spruce-hub/service-proxy/compare/v1.1.0...v1.1.1) (2023-04-21)
+
+### 🐛Bug Fixes
+
+- 修复无法正确为每个域名配置 SSL 证书 ([a8453a6](https://github.com/spruce-hub/service-proxy/commit/a8453a6280ac9a9caaf38c3478cffe62b7af0f11))
+
 # [1.1.0](https://github.com/spruce-hub/service-proxy/compare/v1.0.0...v1.1.0) (2023-04-20)
 
 ### ✨Features
