@@ -88,7 +88,7 @@ export const createServer = (config: Config) => {
     isDistribution(PROXY, req, res, config)
   })
 
-  HTTPS.listen(8000, '0.0.0.0', () => {
+  HTTPS.listen(443, '0.0.0.0', () => {
     console.log('HTTPS 正常运行 >>> https://0.0.0.0:443')
     LOGGER.info('HTTPS 正常运行 >>> https://0.0.0.0:443')
   })
@@ -97,7 +97,7 @@ export const createServer = (config: Config) => {
     isDistribution(PROXY, req, res, config)
   })
 
-  HTTP.listen(8080, '0.0.0.0', () => {
+  HTTP.listen(80, '0.0.0.0', () => {
     console.log('HTTP 正常运行 >>> http://0.0.0.0:80')
     LOGGER.info('HTTP 正常运行 >>> http://0.0.0.0:80')
   })
