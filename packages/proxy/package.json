@@ -1,6 +1,6 @@
 {
   "name": "@spruce-hub/service-proxy",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Universal http proxy utils",
   "type": "module",
   "main": "./dist/index.cjs",

@@ -6,6 +6,6 @@
     "dev": "node ./index.js"
   },
   "devDependencies": {
-    "@spruce-hub/service-proxy": "workspace:^1.1.1"
+    "@spruce-hub/service-proxy": "workspace:^1.1.2"
   }
 }
