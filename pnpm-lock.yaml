@@ -75,7 +75,7 @@ importers:
   packages/playground:
     devDependencies:
       '@spruce-hub/service-proxy':
-        specifier: workspace:^1.1.2
+        specifier: workspace:^1.1.3
         version: link:../proxy
 
   packages/proxy:

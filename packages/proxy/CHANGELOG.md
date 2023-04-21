@@ -1,8 +1,19 @@
-## [1.1.2](https://github.com/spruce-hub/service-proxy/compare/v1.1.0...v1.1.2) (2023-04-21)
+## [1.1.3](https://github.com/spruce-hub/service-proxy/compare/v1.1.2...v1.1.3) (2023-04-21)
+
+### 🐛Bug Fixes
+
+- 使用 try catch 处理 SSL 证书不存在的情况 ([11be53c](https://github.com/spruce-hub/service-proxy/commit/11be53c12f8f5e20ae6ebbda788caeb9bcbcbc47))
+
+## [1.1.2](https://github.com/spruce-hub/service-proxy/compare/v1.1.1...v1.1.2) (2023-04-21)
 
 ### 🐛Bug Fixes
 
 - 使用正确的端口 ([9da17a8](https://github.com/spruce-hub/service-proxy/commit/9da17a83869c0db5032a02ac94aca6fd9971ce1c))
+
+## [1.1.1](https://github.com/spruce-hub/service-proxy/compare/v1.1.0...v1.1.1) (2023-04-21)
+
+### 🐛Bug Fixes
+
 - 修复无法正确为每个域名配置 SSL 证书 ([a8453a6](https://github.com/spruce-hub/service-proxy/commit/a8453a6280ac9a9caaf38c3478cffe62b7af0f11))
 
 # [1.1.0](https://github.com/spruce-hub/service-proxy/compare/v1.0.0...v1.1.0) (2023-04-20)
