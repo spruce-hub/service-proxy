@@ -77,11 +77,15 @@ export const createServer = (config: Config) => {
 
   const ssl = {
     SNICallback: function (hostname: string, cb: (err: Error | null, ctx?: SecureContext) => void) {
-      const ctx = createSecureContext({
-        key: readFileSync(join(cwd(), `${config.sslDir}/${hostname}.key`)),
-        cert: readFileSync(join(cwd(), `${config.sslDir}/${hostname}.pem`)),
-      })
-      cb(null, ctx.context)
+      try {
+        const ctx = createSecureContext({
+          key: readFileSync(join(cwd(), `${config.sslDir}/${hostname}.key`)),
+          cert: readFileSync(join(cwd(), `${config.sslDir}/${hostname}.pem`)),
+        })
+        cb(null, ctx.context)
+      } catch (err) {
+        LOGGER.error(`${err}`, { label: 'SSL 证书无效' })
+      }
     },
   }
   const HTTPS = httpsCreateServer(ssl, (req, res) => {
