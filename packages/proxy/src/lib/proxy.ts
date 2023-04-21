@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { createServer as httpCreateServer } from 'node:http'
 import { createServer as httpsCreateServer } from 'node:https'
+import { createSecureContext } from 'tls'
 
 import httpProxy from 'http-proxy'
 import { createLogger, format } from 'winston'
@@ -11,6 +12,7 @@ import DailyRotateFile from 'winston-daily-rotate-file'
 import type { ServerResponse, IncomingMessage } from 'http'
 import type Server from 'http-proxy'
 import type { Config } from '../config'
+import type { SecureContext } from 'tls'
 
 const { combine, timestamp, label, prettyPrint } = format
 
@@ -73,44 +75,29 @@ export const createServer = (config: Config) => {
   })
   isError(PROXY)
 
-  if (config.https?.sslKey && config.https?.sslPem) {
-    const paths = Object.keys(config.https.sslKey)
-
-    const sslmap: { [key: string]: { key: Buffer; cert: Buffer } } = {}
-
-    for (const path in paths) {
-      sslmap[path].key = readFileSync(join(cwd(), config.https.sslKey[path]))
-      sslmap[path].cert = readFileSync(join(cwd(), config.https.sslPem[path]))
-    }
-
-    const SERVER = httpsCreateServer((req, res) => {
-      isDistribution(PROXY, req, res, config)
-    })
-
-    SERVER.addListener('secureConnection', (tlsSocket) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore: resolved with Nuxt
-      const servername = tlsSocket.servername
-
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore: resolved with Nuxt
-      tlsSocket.context.setKey(sslmap[servername].key)
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore: resolved with Nuxt
-      tlsSocket.context.setCert(sslmap[servername].cert)
-    })
-
-    SERVER.listen(443, '0.0.0.0', () => {
-      console.log('HTTPS 正常运行 >>> https://0.0.0.0:443')
-      LOGGER.info('HTTPS 正常运行 >>> https://0.0.0.0:443')
-    })
+  const ssl = {
+    SNICallback: function (hostname: string, cb: (err: Error | null, ctx?: SecureContext) => void) {
+      const ctx = createSecureContext({
+        key: readFileSync(join(cwd(), `${config.sslDir}/${hostname}.key`)),
+        cert: readFileSync(join(cwd(), `${config.sslDir}/${hostname}.pem`)),
+      })
+      cb(null, ctx.context)
+    },
   }
-
-  const SERVER = httpCreateServer((req, res) => {
+  const HTTPS = httpsCreateServer(ssl, (req, res) => {
     isDistribution(PROXY, req, res, config)
   })
 
-  SERVER.listen(80, '0.0.0.0', () => {
+  HTTPS.listen(8000, '0.0.0.0', () => {
+    console.log('HTTPS 正常运行 >>> https://0.0.0.0:443')
+    LOGGER.info('HTTPS 正常运行 >>> https://0.0.0.0:443')
+  })
+
+  const HTTP = httpCreateServer((req, res) => {
+    isDistribution(PROXY, req, res, config)
+  })
+
+  HTTP.listen(8080, '0.0.0.0', () => {
     console.log('HTTP 正常运行 >>> http://0.0.0.0:80')
     LOGGER.info('HTTP 正常运行 >>> http://0.0.0.0:80')
   })

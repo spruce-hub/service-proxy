@@ -1,21 +1,11 @@
 export interface Config {
-  https?: {
-    /** SSL Key 相对于运行目录的根路径
-     *
-     * - sslKeyPath = join(cwd(), config.https.sslKey)
-     * -------------------------- */
-    sslKey: {
-      [key: string]: string
-    }
-
-    /** SSL Pem 相对于运行目录的根路径
-     *
-     * -- sslPemPath = join(cwd(), config.https.sslPem)
-     * -------------------------- */
-    sslPem: {
-      [key: string]: string
-    }
-  }
+  /** 存放 SSL 证书的目录的相对路径
+   *
+   * SSL 证书命名格式：
+   *  - 域名.key
+   *  - 域名.pem
+   * -------------------------- */
+  sslDir: string
 
   /** 远程地址和目标地址
    * - 远程地址不要带协议
