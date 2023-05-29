@@ -45,7 +45,7 @@ const isDistribution = (
   try {
     if (req.headers.host) {
       proxy.web(req, res, {
-        target: config.path[req.headers.host],
+        target: config.path[req.headers.host].proxyUrl,
       })
     }
   } catch (err) {
@@ -98,7 +98,13 @@ export const createServer = (config: Config) => {
   })
 
   const HTTP = httpCreateServer((req, res) => {
-    isDistribution(PROXY, req, res, config)
+    if (req.headers.host && config.path[req.headers.host].https) {
+      res.statusCode = 302
+      res.setHeader('Location', `https://${req.headers.host}${req.url}`)
+      res.end()
+    } else {
+      isDistribution(PROXY, req, res, config)
+    }
   })
 
   HTTP.listen(80, '0.0.0.0', () => {
