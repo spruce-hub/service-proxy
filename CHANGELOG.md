@@ -1,3 +1,9 @@
+# [1.2.0](https://github.com/spruce-hub/service-proxy/compare/v1.1.3...v1.2.0) (2023-05-29)
+
+### ✨Features
+
+- 如果启用了 https，那么 http 会重定向到 https ([56b1b79](https://github.com/spruce-hub/service-proxy/commit/56b1b791755d16267ead89533d5910b2767e9bbe))
+
 ## [1.1.3](https://github.com/spruce-hub/service-proxy/compare/v1.1.2...v1.1.3) (2023-04-21)
 
 ### 🐛Bug Fixes
